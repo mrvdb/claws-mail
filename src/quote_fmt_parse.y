@@ -461,9 +461,14 @@ static void quote_fmt_show_msg(MsgInfo *msginfo, const gchar *body,
 			if (!signature && strncmp(buf, "-- \n", 4) == 0)
 				break;
 		
-			if (quoted && quote_str)
+			if (quoted && quote_str) {
 				INSERT(quote_str);
-			
+				/* If the buf does not start with quote_str (earlier quote),
+				   insert a space to separate quote marks from text */ 
+				if(strncmp(buf,quote_str,strlen(quote_str) != 0)) {
+					INSERT(" ");
+				} 
+			}
 			INSERT(buf);
 		}
 		fclose(fp);
